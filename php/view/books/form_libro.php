@@ -15,6 +15,7 @@ if (isset($_GET['id'])) {
     $autor = $tblLibro[0]->{'nombre autor'};
     $idTipoLibro = $tblLibro[0]->{'id tipo libro'};
     $tipoLibro = $tblLibro[0]->{'tipo de libro'};
+    $imagen_db = $tblLibro[0]->{'imagen'};
 }
 ?>
 <p class="text-center text-xl py-4"><?= $encabezado; ?></p>
@@ -33,7 +34,7 @@ if (isset($_GET['id'])) {
                 <?php if (!isset($_GET['id'])) { ?>
                 <div>
                     <label for="copias" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Copias</label>
-                    <input name="copias" type="number" min="1" value="" id="copias" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    <input name="copias" type="number" min="1" value="1" id="copias" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
                 </div>
                 <?php }?>
                 <div>
@@ -75,12 +76,13 @@ if (isset($_GET['id'])) {
                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Haga clic para cargar</span> o arrastrar y soltar</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG o GIF (MAX. 800x400px)</p>
                     </div>
-                    <input id="dropzone-file" name="imagen" type="file" class="hidden" />
+                    <input id="dropzone-file" name="imagen" value="<?= $imagen_db;?>" type="file" class="hidden" accept="image/png, .jpeg, .jpg, image/gif"/>
                 </label>
             </div>
             <div>
                 <p class="py-4"></p>
                 <input name="bibliotecario" value="1000" type="hidden" id="bibliotecario">
+                <input name="imagen_db" value="<?= $imagen_db;?>" type="hidden" id="bibliotecario">
                 <input name="idEditarLibro" value="<?= $id;?>" type="hidden" id="idEditarLibro">
             </div>
 

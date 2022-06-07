@@ -1,23 +1,19 @@
 <?php
-interface ICrud
-{
-    use Database;
-}
 
-interface ISelect extends ICrud
+interface ISelect
 {
-    function Select($query);
+    function Select($sql);
 }
-interface IAdd extends ICrud
+interface IAdd
 {
-    function Add($array);
+    function Add($sql);
 }
-interface IUpdate extends ICrud
+interface IUpdate
 {
 
-    function Update($id);
+    function Update($id, $array);
 }
-interface IDelete extends ICrud
+interface IDelete
 {
     function Delete($id);
 }

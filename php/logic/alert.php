@@ -5,17 +5,21 @@ function leerdatos($opcion)
     $id = intval($_POST['idEditarLibro']);
     $isbn = $_POST['isbn'];
     $titulo = $_POST['titulo'];
-    $copias = $_POST['copias'];
+    @$copias = $_POST['copias'];
     $autor = intval($_POST['autor']);
     $tipo_libro = intval($_POST['tipo-libro']);
     $bibliotecario = intval($_POST['bibliotecario']);
-    $imagen = str_replace(' ', '-', $isbn) . '-' . str_replace(' ', '-', $_FILES['imagen']['name']);
+    $marcadeTiempo = new DateTime();
+    $imagen = $marcadeTiempo->format('Y-m-d-H-i-s') . '-' . str_replace(' ', '-', $_FILES['imagen']['name']);
     $ruta = $_FILES['imagen']['tmp_name'];
-    $destino = STORAGE_BOOKS . $imagen;
-    moverImagen($ruta, $destino);
-
+    if ($ruta) {
+        $destino = STORAGE_BOOKS . $imagen;
+        moverImagen($ruta, $destino);
+    } else {
+        $imagen = $_POST['imagen_db'];
+    }
     if ($opcion == 'editar') {
-        $array = array($isbn, $titulo, $copias, $autor, $tipo_libro, $imagen, $id);
+        $array = array($isbn, $titulo, $autor, $tipo_libro, $imagen, $id);
         return $array;
     }
     if ($opcion == 'registrar') {
@@ -80,6 +84,7 @@ $idAutor = 1;
 $autor = 'Selecciona Autor';
 $idTipoLibro = 1;
 $tipoLibro = 'Que tipo de libro es?';
+$imagen_db = NULL;
 # configuaracion del boton GUARDAR | EDITAR
 $btnNombre = 'register';
 ?>

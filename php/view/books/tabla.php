@@ -71,7 +71,7 @@
                         <?php echo $dato->{'Tipo de Libro'}; ?>
                     </td>
                     <td class="px-6 py-4">
-                        <img src="/biblioteca/php/public/images/books/<?= $dato->image; ?>" alt="" width="20%">
+                        <img src="/biblioteca/php/public/images/books/<?= $dato->image; ?>" alt="" class="w-8">
                     </td>
                     <td class="px-6 py-4 text-right">
                         <a href="/biblioteca/book.php?id=<?= $dato->{'id libro'}; ?>" name="editar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" data-modal-toggle="editbook-modall">Editar</a>
