@@ -11,7 +11,6 @@ if (isset($_GET['id'])) {
   
     $isbn = $tblLibro[0]->isbn;
     $tituloLibro = $tblLibro[0]->titulo;
-    $copias = $tblLibro[0]->copias;
     $idAutor = $tblLibro[0]->{'id autor'};
     $autor = $tblLibro[0]->{'nombre autor'};
     $idTipoLibro = $tblLibro[0]->{'id tipo libro'};
@@ -22,7 +21,7 @@ if (isset($_GET['id'])) {
 <form action="" method="POST" enctype='multipart/form-data'>
     <div class="shadow overflow-hidden rounded">
         <div class="px-4 py-5 bg-white sm:p-6">
-            <div class="grid gap-6 mb-6 lg:grid-cols-3">
+            <div class="grid gap-6 mb-6 lg:grid-cols-2">
                 <div>
                     <label for="isbn" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">ISBN</label>
                     <input name="isbn" type="text" value="<?= $isbn; ?>" id="isbn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0-7645-2641-3" required="">
@@ -31,10 +30,12 @@ if (isset($_GET['id'])) {
                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Titulo</label>
                     <input name="titulo" type="text" value="<?= $tituloLibro; ?>" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="El sueño de una noche de verano" required="">
                 </div>
+                <?php if (!isset($_GET['id'])) { ?>
                 <div>
                     <label for="copias" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Copias</label>
-                    <input name="copias" type="number" min="1" value="<?= $copias; ?>" id="copias" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    <input name="copias" type="number" min="1" value="" id="copias" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
                 </div>
+                <?php }?>
                 <div>
                     <label for="autor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Selecciona un Autor</label>
                     <select id="autor" name="autor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
