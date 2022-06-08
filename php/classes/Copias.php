@@ -6,8 +6,5 @@ class Copias implements IAdd
     {
         $query = $this->pdo()->prepare($sql);
         $query->execute();
-        /* echo '<pre>';
-        print_r($sql);
-        echo '</pre>'; */
     }
 }
