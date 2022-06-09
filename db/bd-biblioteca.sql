@@ -20,6 +20,26 @@ SET
 END WHILE ;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `P_LOANS` (IN `_codLector` INT, IN `_codBbliotecario` INT, IN `_idCopia` INT, OUT `msg` VARCHAR(50), OUT `STATTUS` INT)  BEGIN
+IF(SELECT estado FROM copias WHERE codigo = _idCopia) = 1 THEN
+    IF(SELECT COUNT(*) FROM prestamo WHERE estado = 1 AND codigoLector = _codLector) < 4 THEN
+    INSERT INTO `prestamo` (`fechaDevolucion`, `codigoLector`, `codigoBbliotecario`, `idCopia`)
+    VALUES (DATE_ADD(CURRENT_DATE(), INTERVAL 3 DAY), _codLector, _codBbliotecario, _idCopia);
+    UPDATE copias SET estado = 2 WHERE codigo = _idCopia;
+    SET STATTUS = 1;
+    SET msg = 'Registro exitoso';
+    SELECT msg, STATTUS;
+   END IF;
+    IF(SELECT COUNT(*) FROM prestamo WHERE estado = 1 AND codigoLector = _codLector) = 3 THEN
+    UPDATE lector SET estado = 2 WHERE codigoLector = _codLector;
+    END IF;
+    ELSE
+    SET msg = 'ERROR!, LIBRO [Prestado o sin devolver]';
+    SET STATTUS = 0;
+    SELECT msg, STATTUS;
+END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `P_READER` (IN `_codigoLector` INT, OUT `id` INT, OUT `msg` VARCHAR(25))  BEGIN
     IF (SELECT estado FROM lector WHERE codigoLector = _codigoLector) = 1 THEN
     SET msg = 'Valido';
@@ -69,21 +89,21 @@ CREATE TABLE `copias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `copias` (`codigo`, `isbn`, `estado`) VALUES
-(10000, '0-2021-2022-1', 1),
-(10001, '0-2021-2022-1', 1),
-(10002, '0-2021-2022-1', 1),
-(10003, '0-2021-2022-1', 1),
-(10004, '0-2021-2022-1', 1),
-(10005, '0-2021-2022-1', 1),
-(10006, '0-2021-2022-1', 1),
-(10007, '0-2021-2022-1', 1),
-(10008, '0-2021-2022-1', 1),
-(10009, '0-2021-2022-1', 1),
-(10010, '0-2021-2022-1', 1),
-(10011, '0-2021-2022-1', 1),
-(10012, '0-2021-2022-1', 1),
-(10013, '0-2021-2022-1', 1),
-(10014, '0-2021-2022-1', 1),
+(10000, '0-2021-2022-1', 2),
+(10001, '0-2021-2022-1', 2),
+(10002, '0-2021-2022-1', 2),
+(10003, '0-2021-2022-1', 2),
+(10004, '0-2021-2022-1', 2),
+(10005, '0-2021-2022-1', 2),
+(10006, '0-2021-2022-1', 2),
+(10007, '0-2021-2022-1', 2),
+(10008, '0-2021-2022-1', 2),
+(10009, '0-2021-2022-1', 2),
+(10010, '0-2021-2022-1', 2),
+(10011, '0-2021-2022-1', 2),
+(10012, '0-2021-2022-1', 2),
+(10013, '0-2021-2022-1', 2),
+(10014, '0-2021-2022-1', 2),
 (10015, '0-2021-2022-1', 1),
 (10016, '0-2021-2022-1', 1),
 (10017, '0-2021-2022-1', 1),
@@ -210,10 +230,14 @@ CREATE TABLE `lector` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `lector` (`codigoLector`, `estado`) VALUES
-(1001, 1),
-(1002, 1),
+(1001, 2),
+(1002, 2),
 (1003, 2),
-(1004, 3);
+(1004, 2),
+(1005, 1),
+(1006, 1),
+(1007, 1),
+(1008, 1);
 
 CREATE TABLE `libro` (
   `id` int(11) NOT NULL,
@@ -243,9 +267,26 @@ CREATE TABLE `prestamo` (
   `fechaDevolucion` date NOT NULL,
   `codigoLector` int(11) NOT NULL,
   `codigoBbliotecario` int(11) NOT NULL,
-  `isbn` varchar(13) NOT NULL,
+  `idCopia` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `prestamo` (`idPrestamo`, `fechaPrestamo`, `fechaDevolucion`, `codigoLector`, `codigoBbliotecario`, `idCopia`, `estado`) VALUES
+(1, '2022-06-08', '2022-06-10', 1001, 1000, 10000, 1),
+(2, '2022-06-08', '2022-06-10', 1001, 1000, 10001, 1),
+(3, '2022-06-08', '2022-06-10', 1002, 1000, 10004, 1),
+(4, '2022-06-08', '2022-06-10', 1001, 1000, 10007, 1),
+(5, '2022-06-08', '2022-06-10', 1002, 1000, 10002, 1),
+(6, '2022-06-08', '2022-06-10', 1002, 1000, 10003, 1),
+(7, '2022-06-08', '2022-06-10', 1003, 1000, 10005, 1),
+(8, '2022-06-08', '2022-06-10', 1003, 1000, 10006, 1),
+(9, '2022-06-08', '2022-06-11', 1003, 1000, 10008, 1),
+(10, '2022-06-08', '2022-06-11', 1004, 1000, 10009, 1),
+(11, '2022-06-08', '2022-06-11', 1004, 1000, 10010, 1),
+(12, '2022-06-08', '2022-06-11', 1004, 1000, 10011, 1),
+(13, '2022-06-08', '2022-06-11', 1005, 1000, 10012, 1),
+(14, '2022-06-08', '2022-06-11', 1005, 1000, 10013, 1),
+(15, '2022-06-08', '2022-06-11', 1007, 1000, 10014, 1);
 
 CREATE TABLE `tipos-de-libros` (
   `idtipoLibro` tinyint(3) NOT NULL,
@@ -278,7 +319,11 @@ INSERT INTO `usuario` (`codigo`, `nombre`, `telefono`, `direccion`, `usuario`, `
 (1001, 'Edgar Allan Poe', '95950000', 'Calle No. 1040', 'allanpoe@biblioteca.com', '12345', 1, '2022-06-06 12:37:52'),
 (1002, 'M.Émile Lauvriére', '', 'Calle No. 1221', 'm.emile@biblioteca.com', '12345', 1, '2022-06-06 12:37:52'),
 (1003, 'Walter Riso', '99985555', 'Casa No. 452', 'w.riso@biblioteca.com', '12345', 1, '2022-06-08 12:48:59'),
-(1004, 'Pablo Neruda', '1904-1973', 'Casa No. 500', 'p.neruda@biblioteca.com', '12345', 1, '2022-06-08 12:48:59');
+(1004, 'Pablo Neruda', '1904-1973', 'Casa No. 500', 'p.neruda@biblioteca.com', '12345', 1, '2022-06-08 12:48:59'),
+(1005, 'Jane Austen', '1775-1817', 'Casa No. 222', 'j.austen@biblioteca.com', '12345', 1, '2022-06-08 21:34:35'),
+(1006, 'Charles Dickens', '', 'Casa No. 664', 'c.dickens@biblioteca.com', '12345', 1, '2022-06-08 21:34:35'),
+(1007, 'Vladimir Nabokov', '1899-1977', 'Casa No. 787', 'v.nabokov@biblioteca.com', '12345', 1, '2022-06-08 21:42:22'),
+(1008, 'Virginia Woolf', '1882-1941', 'Casa No. 3333', 'v.woolf@biblioteca.com', '12345', 1, '2022-06-08 21:42:22');
 CREATE TABLE `v_editar_libro` (
 `ideditar` int(11)
 ,`isbn` varchar(18)
@@ -335,7 +380,7 @@ ALTER TABLE `prestamo`
   ADD PRIMARY KEY (`idPrestamo`),
   ADD KEY `codigoLector` (`codigoLector`),
   ADD KEY `codigoBbliotecario` (`codigoBbliotecario`),
-  ADD KEY `isbn` (`isbn`);
+  ADD KEY `isbn` (`idCopia`);
 
 ALTER TABLE `tipos-de-libros`
   ADD PRIMARY KEY (`idtipoLibro`);
@@ -357,13 +402,13 @@ ALTER TABLE `libro`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 ALTER TABLE `prestamo`
-  MODIFY `idPrestamo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 ALTER TABLE `tipos-de-libros`
   MODIFY `idtipoLibro` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 ALTER TABLE `usuario`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1005;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1009;
 
 
 ALTER TABLE `bibliotecario`
@@ -385,9 +430,9 @@ ALTER TABLE `libro`
   ADD CONSTRAINT `libro_ibfk_3` FOREIGN KEY (`tipoLibro`) REFERENCES `tipos-de-libros` (`idtipoLibro`);
 
 ALTER TABLE `prestamo`
-  ADD CONSTRAINT `prestamo_ibfk_1` FOREIGN KEY (`isbn`) REFERENCES `libro` (`isbn`),
   ADD CONSTRAINT `prestamo_ibfk_2` FOREIGN KEY (`codigoLector`) REFERENCES `lector` (`codigoLector`),
-  ADD CONSTRAINT `prestamo_ibfk_3` FOREIGN KEY (`codigoBbliotecario`) REFERENCES `bibliotecario` (`codigoBbliotecario`);
+  ADD CONSTRAINT `prestamo_ibfk_3` FOREIGN KEY (`codigoBbliotecario`) REFERENCES `bibliotecario` (`codigoBbliotecario`),
+  ADD CONSTRAINT `prestamo_ibfk_4` FOREIGN KEY (`idCopia`) REFERENCES `copias` (`codigo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
