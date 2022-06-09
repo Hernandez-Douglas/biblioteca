@@ -1,2 +1,4 @@
 <?php
-class Users {}
+class Users {
+    function consultaEstado(){}
+}
