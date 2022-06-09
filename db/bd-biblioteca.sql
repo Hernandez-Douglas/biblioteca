@@ -60,6 +60,49 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `P_READER` (IN `_codigoLector` INT, 
     END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `P_RETURN` (IN `_codigoCopia` INT, OUT `msgPrestamo` VARCHAR(50), OUT `msgLector` VARCHAR(50), OUT `msgCopia` VARCHAR(50), OUT `msgDevolucion` VARCHAR(50), OUT `STATTUS` INT, IN `Bbliotecario` INT)  BEGIN
+DECLARE _codigoLector int;
+DECLARE _idPrestamo int;
+SET _codigoLector = 0;
+SET STATTUS = 0;
+SET msgPrestamo = 'Sin resultados';
+SET msgLector = 'Sin resultados';
+SET msgCopia = 'Sin resultados';
+SET msgDevolucion = 'Sin resultados';
+IF(SELECT estado FROM prestamo WHERE idCopia = _codigoCopia AND estado = 1) = 1 THEN
+SET _codigoLector = (SELECT codigoLector FROM prestamo WHERE idCopia = _codigoCopia AND estado = 1);
+SET _idPrestamo = (SELECT prestamo.idPrestamo FROM prestamo WHERE prestamo.idCopia = _codigoCopia AND estado = 1);
+SET STATTUS = 1;
+
+# 1 puedes UPDATE el PRESTAMO a estado 0 donde idCopia=xxyy y estado = 1
+UPDATE prestamo SET prestamo.estado = 0 WHERE prestamo.idCopia = _codigoCopia AND prestamo.codigoLector = _codigoLector AND prestamo.estado = 1;
+SET msgPrestamo = 'Prestamo Actualizado';
+
+# 2 puedes UPDATE el estado del LECTOR a 1 si si estado era = 2 donde codigo = _codigoLector 
+SET msgLector = 'Lector activo';
+IF(SELECT lector.estado FROM lector WHERE lector.codigoLector = _codigoLector AND lector.estado = 2) THEN
+UPDATE lector SET lector.estado = 1 WHERE lector.codigoLector = _codigoLector AND lector.estado = 2;
+SET msgLector = 'Lector actualizado a 1';
+END IF;
+
+IF(SELECT estado FROM lector WHERE codigoLector = _codigoLector AND estado = 3) THEN
+SET msgLector = 'Este Lector tiene multas pendientes';
+SET STATTUS = 2;
+END IF;
+
+# 3 puedes actualizar estado de la COPIA a = 1 donde el codigo = _codigoCopia
+UPDATE copias SET copias.estado = 1 WHERE copias.codigo = _codigoCopia AND copias.estado = 2;
+SET msgCopia = 'Copia devuelta';
+
+#insertar en la tabla DEVOLUCION (idprestamo, idBbliotecario)
+INSERT INTO devolucion(`idPrestamo`, `idBbliotecario`) VALUES(_idPrestamo, Bbliotecario);
+SET msgDevolucion = 'Se registro la devolucion';
+
+#ELSE # Libro no tiene estado de prestamo O NO EXISTE
+END IF;
+SELECT STATTUS ,_codigoLector, msgPrestamo, msgLector, msgCopia, msgDevolucion;
+END$$
+
 DELIMITER ;
 
 CREATE TABLE `autor` (
@@ -89,14 +132,14 @@ CREATE TABLE `copias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `copias` (`codigo`, `isbn`, `estado`) VALUES
-(10000, '0-2021-2022-1', 2),
+(10000, '0-2021-2022-1', 1),
 (10001, '0-2021-2022-1', 2),
-(10002, '0-2021-2022-1', 2),
+(10002, '0-2021-2022-1', 1),
 (10003, '0-2021-2022-1', 2),
-(10004, '0-2021-2022-1', 2),
+(10004, '0-2021-2022-1', 1),
 (10005, '0-2021-2022-1', 2),
 (10006, '0-2021-2022-1', 2),
-(10007, '0-2021-2022-1', 2),
+(10007, '0-2021-2022-1', 1),
 (10008, '0-2021-2022-1', 2),
 (10009, '0-2021-2022-1', 2),
 (10010, '0-2021-2022-1', 2),
@@ -104,7 +147,7 @@ INSERT INTO `copias` (`codigo`, `isbn`, `estado`) VALUES
 (10012, '0-2021-2022-1', 2),
 (10013, '0-2021-2022-1', 2),
 (10014, '0-2021-2022-1', 2),
-(10015, '0-2021-2022-1', 1),
+(10015, '0-2021-2022-1', 2),
 (10016, '0-2021-2022-1', 1),
 (10017, '0-2021-2022-1', 1),
 (10018, '0-2021-2022-1', 1),
@@ -224,14 +267,21 @@ CREATE TABLE `devolucion` (
   `idBbliotecario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `devolucion` (`idDevolucion`, `idPrestamo`, `idBbliotecario`) VALUES
+(1, 2, 1000),
+(2, 3, 1000),
+(3, 1, 1000),
+(4, 4, 1000),
+(5, 5, 1000);
+
 CREATE TABLE `lector` (
   `codigoLector` int(11) NOT NULL,
   `estado` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `lector` (`codigoLector`, `estado`) VALUES
-(1001, 2),
-(1002, 2),
+(1001, 3),
+(1002, 1),
 (1003, 2),
 (1004, 2),
 (1005, 1),
@@ -272,11 +322,11 @@ CREATE TABLE `prestamo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `prestamo` (`idPrestamo`, `fechaPrestamo`, `fechaDevolucion`, `codigoLector`, `codigoBbliotecario`, `idCopia`, `estado`) VALUES
-(1, '2022-06-08', '2022-06-10', 1001, 1000, 10000, 1),
-(2, '2022-06-08', '2022-06-10', 1001, 1000, 10001, 1),
-(3, '2022-06-08', '2022-06-10', 1002, 1000, 10004, 1),
-(4, '2022-06-08', '2022-06-10', 1001, 1000, 10007, 1),
-(5, '2022-06-08', '2022-06-10', 1002, 1000, 10002, 1),
+(1, '2022-06-08', '2022-06-10', 1001, 1000, 10000, 0),
+(2, '2022-06-08', '2022-06-10', 1001, 1000, 10001, 0),
+(3, '2022-06-08', '2022-06-10', 1002, 1000, 10004, 0),
+(4, '2022-06-08', '2022-06-10', 1001, 1000, 10007, 0),
+(5, '2022-06-08', '2022-06-10', 1002, 1000, 10002, 0),
 (6, '2022-06-08', '2022-06-10', 1002, 1000, 10003, 1),
 (7, '2022-06-08', '2022-06-10', 1003, 1000, 10005, 1),
 (8, '2022-06-08', '2022-06-10', 1003, 1000, 10006, 1),
@@ -286,7 +336,9 @@ INSERT INTO `prestamo` (`idPrestamo`, `fechaPrestamo`, `fechaDevolucion`, `codig
 (12, '2022-06-08', '2022-06-11', 1004, 1000, 10011, 1),
 (13, '2022-06-08', '2022-06-11', 1005, 1000, 10012, 1),
 (14, '2022-06-08', '2022-06-11', 1005, 1000, 10013, 1),
-(15, '2022-06-08', '2022-06-11', 1007, 1000, 10014, 1);
+(15, '2022-06-08', '2022-06-11', 1007, 1000, 10014, 1),
+(16, '2022-06-09', '2022-06-12', 1007, 1000, 10015, 1),
+(17, '2022-06-09', '2022-06-12', 1002, 1000, 10001, 1);
 
 CREATE TABLE `tipos-de-libros` (
   `idtipoLibro` tinyint(3) NOT NULL,
@@ -396,13 +448,13 @@ ALTER TABLE `copias`
   MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10129;
 
 ALTER TABLE `devolucion`
-  MODIFY `idDevolucion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idDevolucion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 ALTER TABLE `libro`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 ALTER TABLE `prestamo`
-  MODIFY `idPrestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idPrestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 ALTER TABLE `tipos-de-libros`
   MODIFY `idtipoLibro` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
