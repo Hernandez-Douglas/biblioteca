@@ -10,7 +10,7 @@
             </a>
             <a href="/biblioteca/prestamos.php" class="list-group-item list-group-item-action py-2 ripple"><i class="fas fa-reply-all fa-fw me-3"></i><span>Prestamos</span></a>
             <a href="/biblioteca/devoluciones.php" class="list-group-item list-group-item-action py-2 ripple"><i class="fas fa-redo-alt fa-fw me-3"></i><span>Devoluciones</span></a>
-            <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i class="fas fa-users fa-fw me-3"></i><span>Usuarios</span></a>
+            <a href="/biblioteca/lectores.php" class="list-group-item list-group-item-action py-2 ripple"><i class="fas fa-users fa-fw me-3"></i><span>Lectores</span></a>
             <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i class="fas fa-chart-line fa-fw me-3"></i><span>Reportes</span></a>
             <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i class="fas fa-money-bill fa-fw me-3"></i><span>Facturas</span></a>
         </div>

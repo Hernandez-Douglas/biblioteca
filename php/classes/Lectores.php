@@ -9,6 +9,10 @@ class Lectores {
         //$prestamo->Add($consulta);
         return $prestamo->Add($consulta);
     }
+    function devolverLibro($consulta){
+        $devolucion = new Devoluciones();
+        return $devolucion->Add($consulta);
+    }
 }
 
 $lector = new Lectores();

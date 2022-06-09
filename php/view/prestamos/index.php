@@ -33,8 +33,8 @@ if (isset($_POST['codigoCopia'])) {
                 if ((@$datos[0]->id !== 1)) {
                 ?>
                     <div>
-                        <label for="codigoLector" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Codigo Lector</label>
-                        <input name="codigoLector" type="search" id="codigoLector" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1254878" required="">
+                        <label for="codigoLector" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Codigo Lector </label>
+                        <input name="codigoLector" type="search" id="codigoLector" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10025 Luego presiona enter" required="" autofocus>
                         <label class="block mb-2 text-sm font-medium text-red-600" for="mensaje"><?= @$datos[0]->msg; ?></label>
                     </div>
                 <?php
@@ -47,7 +47,7 @@ if (isset($_POST['codigoCopia'])) {
                         <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                             COP--
                         </span>
-                        <input type="number" id="codigoCopia" name="codigoCopia" class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1001" require="">
+                        <input type="number" id="codigoCopia" name="codigoCopia" class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1001" require="" autofocus>
                     </div>
                     <input type="hidden" name="lector" value="<?= $codigo; ?>">
 
