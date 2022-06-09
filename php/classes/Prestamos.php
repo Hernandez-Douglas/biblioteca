@@ -1,11 +1,17 @@
 <?php
-class Prestamos implements ISelect {
+class Prestamos implements ISelect, IAdd {
     use Database;
     function Select($sql)
     {
         $query = $this->pdo()->prepare($sql);
-        //echo $sql;
         @$query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
+    }
+    function Add($sql)
+    {
+        $query = $this->pdo()->prepare($sql);
+        @$query->execute();
+        return $query->fetchAll(PDO::FETCH_OBJ);
+        //print_r($sql);
     }
 }
