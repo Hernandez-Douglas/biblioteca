@@ -1,5 +1,5 @@
 <?php
-$sql = "SELECT * FROM `v_libros`;";
+$sql = "SELECT * FROM `v_libros` ORDER BY `id libro` DESC;";
 $columnaLibro = $book->Select($sql);
 ?>
 <section class="overflow-hidden text-gray-700">
