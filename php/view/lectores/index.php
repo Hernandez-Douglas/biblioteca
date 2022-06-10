@@ -52,7 +52,7 @@
                                     <td class="p-2 whitespace-nowrap">
                                         <div class="text-left">
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="hidden sm:inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" data-mdb-toggle="modal" data-mdb-target="#exampleModal<?= $valor->codigoLector; ?>">
+                                            <button type="button" class="hidden underline sm:inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" data-mdb-toggle="modal" data-mdb-target="#exampleModal<?= $valor->codigoLector; ?>">
                                                 <?= $valor->codigoLector; ?>
                                             </button>
                                         </div>
