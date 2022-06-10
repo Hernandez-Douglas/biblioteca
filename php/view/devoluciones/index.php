@@ -8,7 +8,7 @@
             <div class="grid gap-6 mb-6 lg:grid-cols-1">
                 <div>
                     <label for="codigoCopia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Codigo Libro</label>
-                    <input name="codigoCopia" type="number" id="codigoCopia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autofocus placeholder="ej: 10020 Luego tecla enter" required="">
+                    <input name="codigoCopia" value="<?=$lib;?>" type="number" id="codigoCopia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autofocus placeholder="ej: 10020 Luego tecla enter" required="">
                 </div>
 
                 <input name="bibliotecario" value="1000" type="hidden" id="bibliotecario">

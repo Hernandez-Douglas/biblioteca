@@ -133,19 +133,19 @@ CREATE TABLE `copias` (
 
 INSERT INTO `copias` (`codigo`, `isbn`, `estado`) VALUES
 (10000, '0-2021-2022-1', 1),
-(10001, '0-2021-2022-1', 2),
+(10001, '0-2021-2022-1', 1),
 (10002, '0-2021-2022-1', 1),
-(10003, '0-2021-2022-1', 2),
+(10003, '0-2021-2022-1', 1),
 (10004, '0-2021-2022-1', 1),
 (10005, '0-2021-2022-1', 2),
-(10006, '0-2021-2022-1', 2),
+(10006, '0-2021-2022-1', 1),
 (10007, '0-2021-2022-1', 1),
 (10008, '0-2021-2022-1', 2),
 (10009, '0-2021-2022-1', 2),
 (10010, '0-2021-2022-1', 2),
 (10011, '0-2021-2022-1', 2),
 (10012, '0-2021-2022-1', 2),
-(10013, '0-2021-2022-1', 2),
+(10013, '0-2021-2022-1', 1),
 (10014, '0-2021-2022-1', 2),
 (10015, '0-2021-2022-1', 2),
 (10016, '0-2021-2022-1', 1),
@@ -155,7 +155,7 @@ INSERT INTO `copias` (`codigo`, `isbn`, `estado`) VALUES
 (10020, '1-2021-2022-2', 1),
 (10021, '1-2021-2022-2', 1),
 (10022, '1-2021-2022-2', 1),
-(10023, '1-2021-2022-2', 1),
+(10023, '1-2021-2022-2', 2),
 (10024, '1-2021-2022-2', 1),
 (10025, '1-2021-2022-2', 1),
 (10026, '1-2021-2022-2', 1),
@@ -187,11 +187,11 @@ INSERT INTO `copias` (`codigo`, `isbn`, `estado`) VALUES
 (10053, '970-10-35-17-5', 1),
 (10054, '970-10-35-17-8', 1),
 (10055, '970-10-35-17-8', 1),
-(10056, '970-10-35-17-8', 1),
+(10056, '970-10-35-17-8', 2),
 (10057, '970-10-35-17-8', 1),
 (10058, '970-10-35-17-8', 1),
 (10059, '970-10-35-17-8', 1),
-(10060, '970-10-35-17-8', 1),
+(10060, '970-10-35-17-8', 2),
 (10061, '970-10-35-17-8', 1),
 (10062, '970-10-35-17-8', 1),
 (10063, '970-10-35-17-8', 1),
@@ -272,7 +272,11 @@ INSERT INTO `devolucion` (`idDevolucion`, `idPrestamo`, `idBbliotecario`) VALUES
 (2, 3, 1000),
 (3, 1, 1000),
 (4, 4, 1000),
-(5, 5, 1000);
+(5, 5, 1000),
+(6, 14, 1000),
+(7, 6, 1000),
+(8, 17, 1000),
+(9, 8, 1000);
 
 CREATE TABLE `lector` (
   `codigoLector` int(11) NOT NULL,
@@ -286,7 +290,7 @@ INSERT INTO `lector` (`codigoLector`, `estado`) VALUES
 (1004, 2),
 (1005, 1),
 (1006, 1),
-(1007, 1),
+(1007, 2),
 (1008, 1);
 
 CREATE TABLE `libro` (
@@ -327,18 +331,21 @@ INSERT INTO `prestamo` (`idPrestamo`, `fechaPrestamo`, `fechaDevolucion`, `codig
 (3, '2022-06-08', '2022-06-10', 1002, 1000, 10004, 0),
 (4, '2022-06-08', '2022-06-10', 1001, 1000, 10007, 0),
 (5, '2022-06-08', '2022-06-10', 1002, 1000, 10002, 0),
-(6, '2022-06-08', '2022-06-10', 1002, 1000, 10003, 1),
+(6, '2022-06-08', '2022-06-10', 1002, 1000, 10003, 0),
 (7, '2022-06-08', '2022-06-10', 1003, 1000, 10005, 1),
-(8, '2022-06-08', '2022-06-10', 1003, 1000, 10006, 1),
+(8, '2022-06-08', '2022-06-10', 1003, 1000, 10006, 0),
 (9, '2022-06-08', '2022-06-11', 1003, 1000, 10008, 1),
 (10, '2022-06-08', '2022-06-11', 1004, 1000, 10009, 1),
 (11, '2022-06-08', '2022-06-11', 1004, 1000, 10010, 1),
 (12, '2022-06-08', '2022-06-11', 1004, 1000, 10011, 1),
 (13, '2022-06-08', '2022-06-11', 1005, 1000, 10012, 1),
-(14, '2022-06-08', '2022-06-11', 1005, 1000, 10013, 1),
+(14, '2022-06-08', '2022-06-11', 1005, 1000, 10013, 0),
 (15, '2022-06-08', '2022-06-11', 1007, 1000, 10014, 1),
 (16, '2022-06-09', '2022-06-12', 1007, 1000, 10015, 1),
-(17, '2022-06-09', '2022-06-12', 1002, 1000, 10001, 1);
+(17, '2022-06-09', '2022-06-12', 1002, 1000, 10001, 0),
+(18, '2022-06-10', '2022-06-13', 1007, 1000, 10023, 1),
+(19, '2022-06-10', '2022-06-13', 1002, 1000, 10056, 1),
+(20, '2022-06-10', '2022-06-13', 1003, 1000, 10060, 1);
 
 CREATE TABLE `tipos-de-libros` (
   `idtipoLibro` tinyint(3) NOT NULL,
@@ -376,6 +383,13 @@ INSERT INTO `usuario` (`codigo`, `nombre`, `telefono`, `direccion`, `usuario`, `
 (1006, 'Charles Dickens', '', 'Casa No. 664', 'c.dickens@biblioteca.com', '12345', 1, '2022-06-08 21:34:35'),
 (1007, 'Vladimir Nabokov', '1899-1977', 'Casa No. 787', 'v.nabokov@biblioteca.com', '12345', 1, '2022-06-08 21:42:22'),
 (1008, 'Virginia Woolf', '1882-1941', 'Casa No. 3333', 'v.woolf@biblioteca.com', '12345', 1, '2022-06-08 21:42:22');
+CREATE TABLE `v_datolector` (
+`codigo` int(11)
+,`nombre` varchar(100)
+,`usuario` varchar(100)
+,`idCopia` int(11)
+,`titulo` varchar(50)
+);
 CREATE TABLE `v_editar_libro` (
 `ideditar` int(11)
 ,`isbn` varchar(18)
@@ -386,6 +400,13 @@ CREATE TABLE `v_editar_libro` (
 ,`tipo de libro` varchar(50)
 ,`imagen` varchar(100)
 );
+CREATE TABLE `v_lectores` (
+`codigoLector` int(11)
+,`nombre` varchar(100)
+,`usuario` varchar(100)
+,`idCopia` int(11)
+,`cantidad` bigint(21)
+);
 CREATE TABLE `v_libros` (
 `id libro` int(11)
 ,`isbn` varchar(18)
@@ -395,12 +416,43 @@ CREATE TABLE `v_libros` (
 ,`Tipo de Libro` varchar(50)
 ,`image` varchar(100)
 );
+DROP TABLE IF EXISTS `v_datolector`;
+CREATE TABLE`v_datolector`(
+    `codigo` int(11) NOT NULL DEFAULT '0',
+    `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+    `usuario` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+    `idCopia` int(11) NOT NULL,
+    `titulo` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
+);
 DROP TABLE IF EXISTS `v_editar_libro`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_editar_libro`  AS SELECT `lib`.`id` AS `ideditar`, `lib`.`isbn` AS `isbn`, `lib`.`titulo` AS `titulo`, `lib`.`idAutor` AS `id autor`, `au`.`nombre` AS `nombre autor`, `lib`.`tipoLibro` AS `id tipo libro`, `tlib`.`nombre` AS `tipo de libro`, `lib`.`image` AS `imagen` FROM ((`libro` `lib` join `autor` `au`) join `tipos-de-libros` `tlib` on(`lib`.`idAutor` = `au`.`idAutor`)) WHERE `lib`.`tipoLibro` = `tlib`.`idtipoLibro` ;
+CREATE TABLE`v_editar_libro`(
+    `ideditar` int(11) NOT NULL DEFAULT '0',
+    `isbn` varchar(18) COLLATE utf8mb4_general_ci NOT NULL,
+    `titulo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `id autor` int(11) NOT NULL,
+    `nombre autor` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `id tipo libro` tinyint(3) NOT NULL,
+    `tipo de libro` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `imagen` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL
+);
+DROP TABLE IF EXISTS `v_lectores`;
+CREATE TABLE`v_lectores`(
+    `codigoLector` int(11) NOT NULL,
+    `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+    `usuario` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+    `idCopia` int(11) NOT NULL,
+    `cantidad` bigint(21) NOT NULL DEFAULT '0'
+);
 DROP TABLE IF EXISTS `v_libros`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_libros`  AS SELECT `lib`.`id` AS `id libro`, `lib`.`isbn` AS `isbn`, `lib`.`titulo` AS `titulo`, count(0) AS `copias`, `au`.`nombre` AS `Autor`, `tlib`.`nombre` AS `Tipo de Libro`, `lib`.`image` AS `image` FROM (((`libro` `lib` join `copias` `cop`) join `autor` `au`) join `tipos-de-libros` `tlib` on(`lib`.`isbn` = `cop`.`isbn`)) WHERE `lib`.`isbn` = `cop`.`isbn` AND `lib`.`idAutor` = `au`.`idAutor` AND `lib`.`tipoLibro` = `tlib`.`idtipoLibro` GROUP BY `lib`.`isbn` ;
+CREATE TABLE`v_libros`(
+    `id libro` int(11) NOT NULL DEFAULT '0',
+    `isbn` varchar(18) COLLATE utf8mb4_general_ci NOT NULL,
+    `titulo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `copias` bigint(21) NOT NULL DEFAULT '0',
+    `Autor` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `Tipo de Libro` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `image` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL
+);
 
 
 ALTER TABLE `autor`
@@ -448,13 +500,13 @@ ALTER TABLE `copias`
   MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10129;
 
 ALTER TABLE `devolucion`
-  MODIFY `idDevolucion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idDevolucion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 ALTER TABLE `libro`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 ALTER TABLE `prestamo`
-  MODIFY `idPrestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idPrestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 ALTER TABLE `tipos-de-libros`
   MODIFY `idtipoLibro` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;

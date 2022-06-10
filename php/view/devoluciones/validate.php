@@ -19,4 +19,9 @@ if (isset($_POST['codigoCopia'])) {
         let eliminarAlert = () => document.getElementById("offset-alert").remove();
         setTimeout(eliminarAlert, 4000);
     </script>
-<?php } ?>
+<?php }
+if (isset($_GET['lib'])) {
+    $lib = $_GET['lib'];
+    echo "<p>$lib</p>";
+}
+?>
