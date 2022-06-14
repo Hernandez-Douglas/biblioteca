@@ -1,14 +1,15 @@
 <?php
-class Books extends Crud
+class Books implements IAdd, ISelect, IUpdate
 {
-
-    function Select($sql)
+    use Database;
+    public function Select($sql)
     {
         $query = $this->pdo()->prepare($sql);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
-    function Add($array)
+
+    public function Add($array)
     {
         $sql = "INSERT INTO `libro` (`isbn`, `titulo`, `idAutor`, `tipoLibro`, `codigoBbliotecario`, `image`) VALUES ('$array[0]','$array[1]','$array[3]','$array[4]','$array[5]', '$array[6]');";
         $query = $this->pdo()->prepare($sql);
@@ -17,26 +18,23 @@ class Books extends Crud
             $this->generarCopias($array[0], $array[2]);
         }
         return ($insertarLibro ? true : false);
-        /* echo '<pre>';
-        print_r($sql);
-        echo '</pre>'; */
     }
-    function Delete($id)
-    {
-    }
-    function Update($array)
+
+    public function Update($array)
     {
         $sql = "UPDATE `libro` SET `isbn` = '$array[0]', `titulo` = '$array[1]', `idAutor` = '$array[2]', `tipoLibro` = '$array[3]', `image` = '$array[4]' WHERE id =$array[5];";
         $query = $this->pdo()->prepare($sql);
         return ($query->execute() ? true : false);
         //print_r($sql);
     }
-    function getAutores()
+
+    public function getAutores()
     {
         $sql = "SELECT `idAutor`,`nombre` FROM `autor`;";
         $autores = new Autores();
         return $autores->Select($sql);
     }
+
     function getTipoLibros()
     {
         $sql = "SELECT * FROM `tipos-de-libros`;";

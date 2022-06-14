@@ -11,7 +11,7 @@ interface IAdd
 interface IUpdate
 {
 
-    function Update($id, $array);
+    function Update($array);
 }
 interface IDelete
 {

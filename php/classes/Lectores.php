@@ -16,7 +16,6 @@ class Lectores implements ISelect
     function prestarLibro($consulta)
     {
         $prestamo = new Prestamos();
-        //$prestamo->Add($consulta);
         return $prestamo->Add($consulta);
     }
     function devolverLibro($consulta)

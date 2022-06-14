@@ -12,6 +12,5 @@ class Prestamos implements ISelect, IAdd {
         $query = $this->pdo()->prepare($sql);
         @$query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
-        //print_r($sql);
     }
 }

@@ -7,7 +7,6 @@ class Devoluciones implements IAdd
         $query = $this->pdo()->prepare($sql);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
-        //return $sql;
     }
 }
 
