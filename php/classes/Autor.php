@@ -1,10 +1,9 @@
 <?php
-class Devoluciones implements IAdd
+class Autor implements ISelect
 {
     use Database;
-    function Add($sql)
+    function Select($sql): array
     {
         return $this->ejecutar($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 }
-

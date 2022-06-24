@@ -1,10 +1,12 @@
 <?php
+
+declare(strict_types=1);
 class Copias implements IAdd
 {
     use Database;
+
     function Add($sql)
     {
-        $query = $this->pdo()->prepare($sql);
-        $query->execute();
+        return  $this->ejecutar($sql);
     }
 }

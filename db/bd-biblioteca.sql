@@ -9,7 +9,7 @@ SET time_zone = "+00:00";
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarCopias` (IN `isbn` VARCHAR(18), IN `cantidad` INT(11))  BEGIN
+CREATE PROCEDURE `insertarCopias` (IN `isbn` VARCHAR(18), IN `cantidad` INT(11))  BEGIN
     DECLARE
         i INT DEFAULT 1 ; WHILE(i <= cantidad)
     DO
@@ -20,7 +20,7 @@ SET
 END WHILE ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `P_LOANS` (IN `_codLector` INT, IN `_codBbliotecario` INT, IN `_idCopia` INT, OUT `msg` VARCHAR(50), OUT `STATTUS` INT)  BEGIN
+CREATE PROCEDURE `P_LOANS` (IN `_codLector` INT, IN `_codBbliotecario` INT, IN `_idCopia` INT, OUT `msg` VARCHAR(50), OUT `STATTUS` INT)  BEGIN
 IF(SELECT estado FROM copias WHERE codigo = _idCopia) = 1 THEN
     IF(SELECT COUNT(*) FROM prestamo WHERE estado = 1 AND codigoLector = _codLector) < 4 THEN
     INSERT INTO `prestamo` (`fechaDevolucion`, `codigoLector`, `codigoBbliotecario`, `idCopia`)
@@ -40,7 +40,7 @@ IF(SELECT estado FROM copias WHERE codigo = _idCopia) = 1 THEN
 END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `P_READER` (IN `_codigoLector` INT, OUT `id` INT, OUT `msg` VARCHAR(25))  BEGIN
+CREATE PROCEDURE `P_READER` (IN `_codigoLector` INT, OUT `id` INT, OUT `msg` VARCHAR(25))  BEGIN
     IF (SELECT estado FROM lector WHERE codigoLector = _codigoLector) = 1 THEN
     SET msg = 'Valido';
     SET id = (SELECT estado FROM lector WHERE codigoLector = _codigoLector);
@@ -60,7 +60,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `P_READER` (IN `_codigoLector` INT, 
     END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `P_RETURN` (IN `_codigoCopia` INT, OUT `msgPrestamo` VARCHAR(50), OUT `msgLector` VARCHAR(50), OUT `msgCopia` VARCHAR(50), OUT `msgDevolucion` VARCHAR(50), OUT `STATTUS` INT, IN `Bbliotecario` INT)  BEGIN
+CREATE PROCEDURE `P_RETURN` (IN `_codigoCopia` INT, OUT `msgPrestamo` VARCHAR(50), OUT `msgLector` VARCHAR(50), OUT `msgCopia` VARCHAR(50), OUT `msgDevolucion` VARCHAR(50), OUT `STATTUS` INT, IN `Bbliotecario` INT)  BEGIN
 DECLARE _codigoLector int;
 DECLARE _idPrestamo int;
 SET _codigoLector = 0;
@@ -419,16 +419,16 @@ CREATE TABLE `v_libros` (
 );
 DROP TABLE IF EXISTS `v_datolector`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_datolector`  AS SELECT `usuario`.`codigo` AS `codigo`, `usuario`.`nombre` AS `nombre`, `usuario`.`usuario` AS `usuario`, `prestamo`.`idCopia` AS `idCopia`, (select `libro`.`titulo` from (`libro` join `copias` on(`copias`.`isbn` = `libro`.`isbn` and `prestamo`.`idCopia` = `copias`.`codigo`)) group by `libro`.`titulo`) AS `titulo` FROM ((`lector` join `usuario` on(`lector`.`codigoLector` = `usuario`.`codigo`)) join `prestamo` on(`lector`.`codigoLector` = `prestamo`.`codigoLector`)) WHERE `prestamo`.`estado` = 1 GROUP BY `prestamo`.`idCopia` ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_datolector`  AS SELECT `usuario`.`codigo` AS `codigo`, `usuario`.`nombre` AS `nombre`, `usuario`.`usuario` AS `usuario`, `prestamo`.`idCopia` AS `idCopia`, (select `libro`.`titulo` from (`libro` join `copias` on(`copias`.`isbn` = `libro`.`isbn` and `prestamo`.`idCopia` = `copias`.`codigo`)) group by `libro`.`titulo`) AS `titulo` FROM ((`lector` join `usuario` on(`lector`.`codigoLector` = `usuario`.`codigo`)) join `prestamo` on(`lector`.`codigoLector` = `prestamo`.`codigoLector`)) WHERE `prestamo`.`estado` = 1 GROUP BY `prestamo`.`idCopia` ;
 DROP TABLE IF EXISTS `v_editar_libro`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_editar_libro`  AS SELECT `lib`.`id` AS `ideditar`, `lib`.`isbn` AS `isbn`, `lib`.`titulo` AS `titulo`, `lib`.`idAutor` AS `id autor`, `au`.`nombre` AS `nombre autor`, `lib`.`tipoLibro` AS `id tipo libro`, `tlib`.`nombre` AS `tipo de libro`, `lib`.`image` AS `imagen` FROM ((`libro` `lib` join `autor` `au`) join `tipos-de-libros` `tlib` on(`lib`.`idAutor` = `au`.`idAutor`)) WHERE `lib`.`tipoLibro` = `tlib`.`idtipoLibro` ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_editar_libro`  AS SELECT `lib`.`id` AS `ideditar`, `lib`.`isbn` AS `isbn`, `lib`.`titulo` AS `titulo`, `lib`.`idAutor` AS `id autor`, `au`.`nombre` AS `nombre autor`, `lib`.`tipoLibro` AS `id tipo libro`, `tlib`.`nombre` AS `tipo de libro`, `lib`.`image` AS `imagen` FROM ((`libro` `lib` join `autor` `au`) join `tipos-de-libros` `tlib` on(`lib`.`idAutor` = `au`.`idAutor`)) WHERE `lib`.`tipoLibro` = `tlib`.`idtipoLibro` ;
 DROP TABLE IF EXISTS `v_lectores`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_lectores`  AS SELECT `lector`.`codigoLector` AS `codigoLector`, `usuario`.`nombre` AS `nombre`, `usuario`.`usuario` AS `usuario`, `prestamo`.`idCopia` AS `idCopia`, count(0) AS `cantidad` FROM ((`lector` join `prestamo` on(`prestamo`.`codigoLector` = `lector`.`codigoLector`)) join `usuario` on(`lector`.`codigoLector` = `usuario`.`codigo` and `lector`.`codigoLector` = `prestamo`.`codigoLector`)) WHERE `prestamo`.`estado` = 1 GROUP BY `lector`.`codigoLector` ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_lectores`  AS SELECT `lector`.`codigoLector` AS `codigoLector`, `usuario`.`nombre` AS `nombre`, `usuario`.`usuario` AS `usuario`, `prestamo`.`idCopia` AS `idCopia`, count(0) AS `cantidad` FROM ((`lector` join `prestamo` on(`prestamo`.`codigoLector` = `lector`.`codigoLector`)) join `usuario` on(`lector`.`codigoLector` = `usuario`.`codigo` and `lector`.`codigoLector` = `prestamo`.`codigoLector`)) WHERE `prestamo`.`estado` = 1 GROUP BY `lector`.`codigoLector` ;
 DROP TABLE IF EXISTS `v_libros`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_libros`  AS SELECT `lib`.`id` AS `id libro`, `lib`.`isbn` AS `isbn`, `lib`.`titulo` AS `titulo`, count(0) AS `copias`, `au`.`nombre` AS `Autor`, `tlib`.`nombre` AS `Tipo de Libro`, `lib`.`image` AS `image` FROM (((`libro` `lib` join `copias` `cop`) join `autor` `au`) join `tipos-de-libros` `tlib` on(`lib`.`isbn` = `cop`.`isbn`)) WHERE `lib`.`isbn` = `cop`.`isbn` AND `lib`.`idAutor` = `au`.`idAutor` AND `lib`.`tipoLibro` = `tlib`.`idtipoLibro` GROUP BY `lib`.`isbn` ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_libros`  AS SELECT `lib`.`id` AS `id libro`, `lib`.`isbn` AS `isbn`, `lib`.`titulo` AS `titulo`, count(0) AS `copias`, `au`.`nombre` AS `Autor`, `tlib`.`nombre` AS `Tipo de Libro`, `lib`.`image` AS `image` FROM (((`libro` `lib` join `copias` `cop`) join `autor` `au`) join `tipos-de-libros` `tlib` on(`lib`.`isbn` = `cop`.`isbn`)) WHERE `lib`.`isbn` = `cop`.`isbn` AND `lib`.`idAutor` = `au`.`idAutor` AND `lib`.`tipoLibro` = `tlib`.`idtipoLibro` GROUP BY `lib`.`isbn` ;
 
 
 ALTER TABLE `autor`

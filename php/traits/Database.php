@@ -19,4 +19,11 @@ trait Database
             die($e->getMessage());
         }
     }
+
+    protected function ejecutar($sql)
+    {
+        $query = $this->pdo()->prepare($sql);
+        if (!@$query->execute()) return false;
+        return $query;
+    }
 }

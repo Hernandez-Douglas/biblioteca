@@ -4,8 +4,6 @@ class TiposDeLibros implements ISelect
     use Database;
     function Select($sql): array
     {
-        $query = $this->pdo()->prepare($sql);
-        $query->execute();
-        return $query->fetchAll();
+        return $this->ejecutar($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 }

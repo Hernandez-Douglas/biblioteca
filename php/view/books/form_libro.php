@@ -1,23 +1,4 @@
-<?php
-$encabezado = 'Formulario registro de libros';
-# Editar o registrar
-if (isset($_GET['id'])) {
-    $encabezado = 'Editar registro de libros';
-    $btnNombre = 'editar';
-    $id = intval($_GET['id']);
-    $sqlLibro = "SELECT * FROM `v_editar_libro` WHERE ideditar = $id;";
-    $tblLibro = $book->Select($sqlLibro);
-    # cargar valores en el formulario
-  
-    $isbn = $tblLibro[0]->isbn;
-    $tituloLibro = $tblLibro[0]->titulo;
-    $idAutor = $tblLibro[0]->{'id autor'};
-    $autor = $tblLibro[0]->{'nombre autor'};
-    $idTipoLibro = $tblLibro[0]->{'id tipo libro'};
-    $tipoLibro = $tblLibro[0]->{'tipo de libro'};
-    $imagen_db = $tblLibro[0]->{'imagen'};
-}
-?>
+<?php require_once('editar.php'); ?>
 <p class="text-center text-xl py-4"><?= $encabezado; ?></p>
 <form action="" method="POST" enctype='multipart/form-data'>
     <div class="shadow overflow-hidden rounded">
@@ -41,26 +22,18 @@ if (isset($_GET['id'])) {
                     <label for="autor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Selecciona un Autor</label>
                     <select id="autor" name="autor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="<?= $idAutor; ?>" selected=""><?= $autor; ?></option>
-                        <?php
-                        foreach ($datosAutor as $columnaAutor) {
-                        ?>
-                            <option value="<?php echo $columnaAutor['idAutor'] ?>"><?php echo $columnaAutor['nombre'] ?></option>
-                        <?php
-                        }
-                        ?>
+                        <?php foreach ($datosAutor as $columnaAutor) {?>
+                            <option value="<?= $columnaAutor->idAutor ?>"><?= $columnaAutor->nombre ?></option>
+                        <?php } ?>
                     </select>
                 </div>
                 <div>
                     <label for="tipo-libro" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Selecciona un tipo libro</label>
                     <select id="tipo-libro" name="tipo-libro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="<?= $idTipoLibro; ?>" selected=""><?= $tipoLibro; ?></option>
-                        <?php
-                        foreach ($datosTiposDeLibros as $columnaTiposLibros) {
-                        ?>
-                            <option value="<?php echo $columnaTiposLibros['idtipoLibro'] ?>"><?php echo $columnaTiposLibros['nombre'] ?></option>
-                        <?php
-                        }
-                        ?>
+                        <?php foreach ($datosTiposDeLibros as $columnaTiposLibros) { ?>
+                            <option value="<?= $columnaTiposLibros->idtipoLibro ?>"><?php echo $columnaTiposLibros->nombre ?></option>
+                        <?php } ?>
                     </select>
                 </div>
             </div>
