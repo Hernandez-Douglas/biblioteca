@@ -1,5 +1,4 @@
 <?php
-
 interface ISelect
 {
     function Select($sql);
